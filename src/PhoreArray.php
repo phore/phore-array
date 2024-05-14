@@ -2,12 +2,14 @@
 
 namespace Phore\Arr;
 
-class PhoreArray
+class PhoreArray implements \ArrayAccess
 {
     private array $data;
 
     public function __construct(array $data)
     {
+        if ( ! array_is_list($data))
+            throw new \InvalidArgumentException("Array must be a list (indexed array)");
         $this->data = $data;
     }
 
@@ -25,12 +27,14 @@ class PhoreArray
     }
 
     /**
+     *
+     *  <example>
+     *  $arr = phore_array([1, 2, 3, 4]);
+     *  $result = $arr->filter(fn($v) => $v % 2 === 0); // [2, 4]
+     *  </example>
+     *
      * @param callable $callback
      * @return PhoreArray
-     * <example>
-     * $arr = phore_array([1, 2, 3, 4]);
-     * $result = $arr->filter(fn($v) => $v % 2 === 0); // [2, 4]
-     * </example>
      */
     public function filter(callable $callback): PhoreArray
     {
@@ -447,6 +451,7 @@ class PhoreArray
         return implode(",", $this->data);
     }
 
+
     /**
      * @param mixed $value
      * @param int $index
@@ -485,5 +490,36 @@ class PhoreArray
     public function values(): PhoreArray
     {
         return new PhoreArray(array_values($this->data));
+    }
+
+
+    public function offsetExists($offset): bool
+    {
+        return isset($this->data[$offset]);
+    }
+
+    /**
+     * @param $offset
+     * @return PhoreArray|null
+     */
+    public function offsetGet(mixed $offset) : mixed
+    {
+        if (!isset($this->data[$offset]))
+            return null;
+        return new PhoreArray($this->data[$offset]);
+    }
+
+    public function offsetSet($offset, $value): void
+    {
+        if (is_null($offset)) {
+            $this->data[] = $value;
+        } else {
+            $this->data[$offset] = $value;
+        }
+    }
+
+    public function offsetUnset($offset): void
+    {
+        unset($this->data[$offset]);
     }
 }

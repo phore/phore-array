@@ -6,9 +6,9 @@ function phore_array(array $data) : \Phore\Arr\PhoreArray
     return new \Phore\Arr\PhoreArray($data);
 }
 
-function phore_assoc(array|object $data) : \Phore\Arr\PhoreArray
+function phore_assoc(array|object $data) : \Phore\Arr\PhoreAssoc
 {
-    return new \Phore\Arr\PhoreArray($data);
+    return new \Phore\Arr\PhoreAssoc($data);
 }
 
 function phore_string(string $data) : \Phore\Arr\PhoreString

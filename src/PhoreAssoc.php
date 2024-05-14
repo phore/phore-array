@@ -3,7 +3,7 @@
 
 namespace Phore\Arr;
 
-class PhoreAssoc
+class PhoreAssoc implements \ArrayAccess
 {
     private array $data;
 
@@ -13,12 +13,13 @@ class PhoreAssoc
     }
 
     /**
+     *  <example>
+     *  $assoc = phore_assoc(['a' => 1, 'b' => 2]);
+     *  $result = $assoc->map(fn($k, $v) => [$k, $v * 2]); // ['a' => 2, 'b' => 4]
+     *  </example>
+     * 
      * @param callable $callback
      * @return PhoreAssoc
-     * <example>
-     * $assoc = phore_assoc(['a' => 1, 'b' => 2]);
-     * $result = $assoc->map(fn($k, $v) => [$k, $v * 2]); // ['a' => 2, 'b' => 4]
-     * </example>
      */
     public function map(callable $callback): PhoreAssoc
     {
@@ -31,12 +32,14 @@ class PhoreAssoc
     }
 
     /**
+     * 
+     *  <example>
+     *  $assoc = phore_assoc(['a' => 1, 'b' => 2]);
+     *  $result = $assoc->filter(fn($k, $v) => $v > 1); // ['b' => 2]
+     *  </example>
+     * 
      * @param callable $callback
      * @return PhoreAssoc
-     * <example>
-     * $assoc = phore_assoc(['a' => 1, 'b' => 2]);
-     * $result = $assoc->filter(fn($k, $v) => $v > 1); // ['b' => 2]
-     * </example>
      */
     public function filter(callable $callback): PhoreAssoc
     {
@@ -147,6 +150,40 @@ class PhoreAssoc
         }
     }
 
+
+    /**
+     * Return the value of the key or the default value if the key does not exist
+     * 
+     * Same as phore_assoc()["key"] ?? $default
+     * 
+     * @template T
+     * @param string $key
+     * @param class-string<T>|null $cast
+     * @param $default
+     * @return mixed|null|T
+     */
+    public function key(string $key, string $instanceOf = null, $default = null)
+    {
+        if (!isset($this->data[$key])) {
+            return $default;
+        }
+        if ($instanceOf !== null) {
+            if ( ! ($this->data[$key] instanceof $instanceOf))
+                throw new \InvalidArgumentException("Key '$key' is not of type '$instanceOf'");
+        }
+        return $this->data[$key];
+    }
+    
+    public function keyToString(string $key) : string|null
+    {
+        if ( ! isset($this->data[$key]))
+            return null;
+        if (! is_string($this->data[$key]))
+            throw new \InvalidArgumentException("Key '$key' is not of type string");
+        return (string)$this->data[$key];
+    }
+ 
+    
     /**
      * @return string
      * <example>
@@ -158,4 +195,43 @@ class PhoreAssoc
     {
         return implode(",", array_map(fn($k, $v) => $k . ":" . $v, array_keys($this->data), $this->data));
     }
+
+    public function offsetExists($offset): bool
+    {
+        return isset($this->data[$offset]);
+    }
+
+
+    /**
+     * @param $offset
+     * @return PhoreAssoc|null
+     */
+    public function offsetGet(mixed $offset) : mixed
+    {
+        if (!isset($this->data[$offset]))
+            return null;
+        return new PhoreAssoc($this->data[$offset]);
+    }
+
+    public function offsetSet($offset, $value): void
+    {
+        if (is_null($offset)) {
+            $this->data[] = $value;
+        } else {
+            $this->data[$offset] = $value;
+        }
+    }
+
+    public function offsetUnset($offset): void
+    {
+        unset($this->data[$offset]);
+    }
+    
+    
+    public function toArray() : array 
+    {
+        return $this->data;
+    }
+   
+    
 }
