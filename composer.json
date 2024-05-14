@@ -1,0 +1,29 @@
+{
+  "name": "phore/array",
+  "description": "",
+  "license": "MIT",
+  "authors": [
+    { "name": "Matthias Leuffen", "email": "m@tth.es" }
+  ],
+  "require": {
+    "php": ">=8.1"
+  },
+
+  "suggest": {
+  },
+  "autoload": {
+    "psr-4": {
+        "Phore\\Arr\\": "src/"
+    },
+      "files": [
+          "src/functions.php"
+      ]
+  },
+  "minimum-stability": "dev",
+  "require-dev": {
+    "phore/tester": "*"
+  },
+  "config": {
+    "preferred-install": "source"
+  }
+}
