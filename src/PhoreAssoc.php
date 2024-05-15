@@ -247,4 +247,17 @@ class PhoreAssoc implements \ArrayAccess
     }
 
 
+    public function ksort($flags = SORT_REGULAR) : PhoreAssoc
+    {
+        $data = $this->data;
+        ksort($data, $flags);
+        return new PhoreAssoc($data);
+    }
+
+    public function toJson(bool $prettyPrint = false) : string
+    {
+        return phore_json_encode($this->data, $prettyPrint);
+    }
+
+
 }

@@ -67,6 +67,12 @@ class PhoreArray implements \ArrayAccess
         return implode($glue, $this->data);
     }
 
+
+    public function toJson(bool $prettyPrint = false): string
+    {
+        return phore_json_encode($this->data, $prettyPrint);
+    }
+
     /**
      * @param callable $callback
      * @return bool
