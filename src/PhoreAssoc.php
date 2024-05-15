@@ -17,7 +17,7 @@ class PhoreAssoc implements \ArrayAccess
      *  $assoc = phore_assoc(['a' => 1, 'b' => 2]);
      *  $result = $assoc->map(fn($k, $v) => [$k, $v * 2]); // ['a' => 2, 'b' => 4]
      *  </example>
-     * 
+     *
      * @param callable $callback
      * @return PhoreAssoc
      */
@@ -32,12 +32,12 @@ class PhoreAssoc implements \ArrayAccess
     }
 
     /**
-     * 
+     *
      *  <example>
      *  $assoc = phore_assoc(['a' => 1, 'b' => 2]);
      *  $result = $assoc->filter(fn($k, $v) => $v > 1); // ['b' => 2]
      *  </example>
-     * 
+     *
      * @param callable $callback
      * @return PhoreAssoc
      */
@@ -152,10 +152,23 @@ class PhoreAssoc implements \ArrayAccess
 
 
     /**
+     *  <example>
+     *  $assoc = phore_assoc(['a' => 1, 'b' => 2]);
+     *  $result = $assoc->find(1); // "a"
+     *  </example>
+     *
+     * @param string $value
+     * @return string|null
+     */
+    public function find($value) : string|null {
+        return array_search($value, $this->data, true) ?: null;
+    }
+
+    /**
      * Return the value of the key or the default value if the key does not exist
-     * 
+     *
      * Same as phore_assoc()["key"] ?? $default
-     * 
+     *
      * @template T
      * @param string $key
      * @param class-string<T>|null $cast
@@ -173,7 +186,7 @@ class PhoreAssoc implements \ArrayAccess
         }
         return $this->data[$key];
     }
-    
+
     public function keyToString(string $key) : string|null
     {
         if ( ! isset($this->data[$key]))
@@ -182,8 +195,8 @@ class PhoreAssoc implements \ArrayAccess
             throw new \InvalidArgumentException("Key '$key' is not of type string");
         return (string)$this->data[$key];
     }
- 
-    
+
+
     /**
      * @return string
      * <example>
@@ -226,12 +239,12 @@ class PhoreAssoc implements \ArrayAccess
     {
         unset($this->data[$offset]);
     }
-    
-    
-    public function toArray() : array 
+
+
+    public function toArray() : array
     {
         return $this->data;
     }
-   
-    
+
+
 }
