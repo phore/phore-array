@@ -458,6 +458,11 @@ class PhoreArray implements \ArrayAccess
     }
 
 
+    public function toArray(): array
+    {
+        return $this->data;
+    }
+
     /**
      * @param mixed $value
      * @param int $index
