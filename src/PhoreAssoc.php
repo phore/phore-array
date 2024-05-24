@@ -206,7 +206,8 @@ class PhoreAssoc implements \ArrayAccess
      */
     public function toString(): string
     {
-        return implode(",", array_map(fn($k, $v) => $k . ":" . $v, array_keys($this->data), $this->data));
+        // Assume values might be arrays or objects
+        return implode(",", array_map(fn($k, $v) => $k . ":" . phore_json_encode($v), array_keys($this->data), $this->data));
     }
 
     public function offsetExists($offset): bool
