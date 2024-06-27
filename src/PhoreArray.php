@@ -28,6 +28,8 @@ class PhoreArray implements \ArrayAccess
 
     /**
      *
+     * If callback returns true, the value is kept in the array, otherwise it is removed.
+     *
      *  <example>
      *  $arr = phore_array([1, 2, 3, 4]);
      *  $result = $arr->filter(fn($v) => $v % 2 === 0); // [2, 4]
