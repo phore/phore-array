@@ -38,7 +38,8 @@ class PhoreArray implements \ArrayAccess
      */
     public function filter(callable $callback): PhoreArray
     {
-        return new PhoreArray(array_filter($this->data, $callback));
+        // reindex array:
+        return new PhoreArray(array_values(array_filter($this->data, $callback)));
     }
 
     /**
