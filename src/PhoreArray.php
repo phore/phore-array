@@ -59,15 +59,25 @@ class PhoreArray implements \ArrayAccess
     }
 
     /**
-     * @return string
+     * @return PhoreString
      * <example>
      * $arr = phore_array([1, 2, 3, 4]);
      * $result = $arr->join(','); // "1,2,3,4"
      * </example>
      */
-    public function join(string $glue): string
+    public function join(string $glue): PhoreString
     {
-        return implode($glue, $this->data);
+        return new PhoreString(implode($glue, $this->data));
+    }
+
+
+    /**
+     * @param string $glue
+     * @return PhoreString
+     */
+    public function implode(string $glue): PhoreString
+    {
+        return $this->join($glue);
     }
 
 
