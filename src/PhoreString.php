@@ -24,6 +24,7 @@ class PhoreString
         return new PhoreArray(explode($delimiter, $this->data));
     }
 
+
     /**
      * @return PhoreString
      * <example>

@@ -26,6 +26,22 @@ class PhoreArray implements \ArrayAccess
         return new PhoreArray(array_map($callback, $this->data));
     }
 
+
+    public function trim() : PhoreArray
+    {
+        return $this->map(fn($v) => trim($v));
+    }
+
+    public function toLower() : PhoreArray
+    {
+        return $this->map(fn($v) => strtolower($v));
+    }
+
+    public function toUpper() : PhoreArray
+    {
+        return $this->map(fn($v) => strtoupper($v));
+    }
+
     /**
      *
      * If callback returns true, the value is kept in the array, otherwise it is removed.
