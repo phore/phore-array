@@ -277,7 +277,8 @@ class PhoreArray implements \ArrayAccess
      */
     public function indexOf($needle): int
     {
-        return array_search($needle, $this->data, true);
+        $index = array_search($needle, $this->data, true);
+        return $index === false ? -1 : $index;
     }
 
 
